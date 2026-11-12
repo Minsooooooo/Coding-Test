@@ -1,61 +1,72 @@
 
 import java.util.*;
 
-
 public class Solution {
+
 	static int n,l;
-	static int[][] food;
+	static int[][] arr;
 	
 	static int max;
 	public static void main(String[] args) {
+		// TODO Auto-generated method stub
 		
 		Scanner sc = new Scanner(System.in);
-		int T = sc.nextInt();
+		int test_case = sc.nextInt();
 		
-		for(int test_case=1; test_case<=T; test_case++) {
+		for(int t=1; t<=test_case; t++) {
+			
 			n = sc.nextInt();
 			l = sc.nextInt();
-            
-            max = Integer.MIN_VALUE;
 			
-			food = new int[n][2];
+			arr = new int[n][2];
+			
 			for(int i=0; i<n; i++) {
-				food[i][0] = sc.nextInt();
-				food[i][1] = sc.nextInt();
+				arr[i][0] = sc.nextInt();
+				arr[i][1] = sc.nextInt();
 			}
 			
-			dfs(0, 0, 0);
+			max = Integer.MIN_VALUE;
 			
-			System.out.println("#"+ test_case +" "+max);
+			dfs(0,0,0);
+			
+			System.out.println("#" + t + " " + max);
+			
+			
 		}
-		
 
 	}
 	
-	public static void dfs(int i, int score, int cal) {
+	public static void dfs(int start, int score, int cal) {
 		
-		if(cal>l) return;
+		if(cal > l) {
+			return;
+		}
 		
-		if(i == n) {
+		if(start == n) {
 			max = Math.max(max, score);
 			return;
 		}
 		
-		dfs(i+1, score, cal);
+		int sc = arr[start][0];
+		int calo = arr[start][1];
+		dfs(start+1, score+sc, cal+calo);
 		
-		dfs(i+1, score+food[i][0], cal+food[i][1]);
-	
+		dfs(start+1, score, cal);
+
+		
+		
 	}
 
 }
-
 /*
-같은 재료를 여러번 사용할 수 없음
 
-1. 테스트케이스 수 T
-2. 재료의 수(N), 제한칼로리(L)
-3. n개의 줄 만큼 맛에대한점수, 칼로리
+재료에 대한 점수, 재료에 대한 칼로리
 
+l = 제한칼로리
+n = 재료 수
 
-주어진 제한칼로리이내의 가장 맛에 대한 점수가 높은 햄버거 출력
+맛 점수, 칼로리
+
+정해진 칼로리 이하의 조합중 만기가 가장 선호하는 햄버거를 조합해주자
+
 */
