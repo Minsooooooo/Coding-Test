@@ -1,12 +1,15 @@
+
+
 import java.util.*;
 
 public class Solution {
 
-    static int[] gyuyoung;
-    static int[] inyoung;
-    static int win,lose;
+    static int[] gyu, in;
 
-    static boolean[] visited = new boolean[9];
+    static int lose;
+    static int win;
+
+    static boolean[] visited;
     public static void main(String[] args){
 
         Scanner sc = new Scanner(System.in);
@@ -14,79 +17,84 @@ public class Solution {
 
         for(int t=1; t<=test_case; t++){
 
-            gyuyoung = new int[9];
-            inyoung = new int[9];
+            gyu = new int[9];
+            in = new int[9];
+            boolean[] bl = new boolean[19];
 
             win = 0;
             lose = 0;
 
+            //규영 카드입력
             for(int i=0; i<9; i++){
-                gyuyoung[i] = sc.nextInt();
+                int num = sc.nextInt();
+                gyu[i] = num;
+
+                bl[num] = true;
             }
 
-
-            int cnt = 0;
+            visited = new boolean[9];
+            //인영카드입력
+            int count = 0;
             for(int i=1; i<=18; i++){
-                boolean bl = false;
-
-                for(int j=0; j<9; j++){
-                    if(gyuyoung[j] == i) {
-                        bl = true;
-                        break;
-                    }
+                if(!bl[i]){
+                    in[count] = i;
+                    count++;
                 }
-
-                if(bl) continue;
-
-                inyoung[cnt] = i;
-                cnt++;
             }
 
+            dfs(0,0,0);
 
-            dfs(0, 0,0);
+            System.out.println("#" + t + " " + win + " " + lose);
 
-            System.out.println("#"+t+" " +win+" "+lose);
 
         }
 
-
     }
 
-    public static void dfs(int n, int winScore, int loseScore){
-
-        if(n==9){
-            if(winScore>loseScore) win++;
-            else if(winScore<loseScore) lose++;
-            return;
+    public static void dfs(int index, int gyu_score, int in_score){
+        if(index==9){
+            if(gyu_score>in_score){
+                win++;
+                return;
+            }else if(gyu_score == in_score) return;
+            else{
+                lose++;
+                return;
+            }
         }
 
         for(int i=0; i<9; i++){
 
-            if(!visited[i]){
-                visited[i] = true;
+            if(visited[i]) continue;
 
-                int gyuCard = gyuyoung[n];
-                int inCard = inyoung[i];
-
-                int sum = gyuCard + inCard;
-
-                if(gyuCard>inCard){
-                    dfs(n+1, winScore+sum, loseScore);
-                }else if(inCard>gyuCard){
-                    dfs(n+1, winScore, loseScore+sum);
-                }
-
-                visited[i] = false;
+            visited[i] = true;
+            int gyu_num = gyu[index];
+            int in_num = in[i];
+            int sum = gyu_num+in_num;
+            if(gyu_num>in_num){
+                dfs(index+1, gyu_score+sum, in_score);
+            }else {
+                dfs(index+1, gyu_score, in_score+sum);
             }
+
+            visited[i] = false;
+
         }
+
     }
 }
 
 /*
-1~18 숫자가 적힌 카드를 9장씩 나눠가짐
-9라운드 한장씩 비교해서 점수계산
-높은수의 카드를 가진사람이 두 카드의 합만큼 점수 획득
-두 사람이 총점이 같으면 무승부
-이기는 경우와 지는경우가 몇가지인지 구해라
+1에서 18까지 수가 적힌 18장 카드
+한번의 게임에 9장씩 카드를 나눔
 
+한장씩 카드를 내서 비교하고
+높은수가 적힌 카드를 낸 사람은 두 카드의 합만큼 점수 +
+낮은 수가 적힌 카드를 낸 사람은 아무 점수 x
+
+
+총점이 높은사람이 승자
+총점이 같으면 무승부
+
+규영이가 이기는 경우와 지는 경우가 총 몇가지인지 구해라
  */
