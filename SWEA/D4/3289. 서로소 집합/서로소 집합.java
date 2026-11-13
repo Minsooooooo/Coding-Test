@@ -1,23 +1,20 @@
-
-import java.util.*;
+import java.util.Scanner;
 
 public class Solution {
 	
 	static int[] parent;
 	static int n,m;
-	static List<int[]> list;
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+		
 		Scanner sc = new Scanner(System.in);
 		int test_case = sc.nextInt();
 		
 		for(int t=1; t<=test_case; t++) {
 			
-			
 			n = sc.nextInt();
 			m = sc.nextInt();
+
 			
 			parent = new int[n+1];
 			
@@ -25,31 +22,31 @@ public class Solution {
 				parent[i] = i;
 			}
 			
-			list = new ArrayList<>();
-			
 			System.out.print("#"+t+" ");
-			
 			for(int i=0; i<m; i++) {
-				int check = sc.nextInt();
+				
+				int num = sc.nextInt();
 				int a = sc.nextInt();
 				int b = sc.nextInt();
 				
-				if(check == 0) union(a, b);
-				else {
-					int root_a = find(a);
-					int root_b = find(b);
+				if(num == 0) {
+					union(a, b);
+				}else {
+					int rootA = find(a);
+					int rootB = find(b);
 					
-					if(root_a == root_b) System.out.print("1");
+					if(rootA==rootB) System.out.print("1");
 					else System.out.print("0");
 				}
+				
 			}
 			
 			System.out.println();
 			
 			
-			
-			
 		}
+		
+
 	}
 	
 	public static int find(int x) {
@@ -62,19 +59,22 @@ public class Solution {
 	}
 	
 	public static boolean union(int a, int b) {
+		int root_a = find(a);
+		int root_b = find(b);
+		if(root_a == root_b) {
+			return false;
+		}
 		
-		int rootA = find(a);
-		int rootB = find(b);
-		
-		if(rootA == rootB) return false;
-		
-		parent[rootB] = rootA;
+		parent[root_b] = root_a;
 		return true;
+		
 	}
 
 }
 
 /*
-n개의 정점 m개의 간선
+
+n 개의 집합
+m
 
 */
