@@ -1,12 +1,9 @@
-
 import java.util.*;
 
 public class Solution {
-
-	static int n,l;
-	static int[][] arr;
-	
 	static int max;
+	static int n,l;
+	static int[][] food;
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
@@ -17,56 +14,37 @@ public class Solution {
 			
 			n = sc.nextInt();
 			l = sc.nextInt();
-			
-			arr = new int[n][2];
-			
-			for(int i=0; i<n; i++) {
-				arr[i][0] = sc.nextInt();
-				arr[i][1] = sc.nextInt();
-			}
+			food = new int[n][2];
 			
 			max = Integer.MIN_VALUE;
 			
-			dfs(0,0,0);
+			for(int i=0; i<n; i++) {
+				food[i][0] = sc.nextInt();
+				food[i][1] = sc.nextInt();
+			}
 			
-			System.out.println("#" + t + " " + max);
 			
+			
+			dfs(0, 0, 0);
+			
+			System.out.println("#"+t+" "+max);
 			
 		}
 
 	}
 	
-	public static void dfs(int start, int score, int cal) {
-		
-		if(cal > l) {
+	public static void dfs(int idx, int score, int cal) {
+		if(cal>l) {
 			return;
 		}
 		
-		if(start == n) {
+		if(idx == n) {
 			max = Math.max(max, score);
 			return;
 		}
 		
-		int sc = arr[start][0];
-		int calo = arr[start][1];
-		dfs(start+1, score+sc, cal+calo);
-		
-		dfs(start+1, score, cal);
-
-		
-		
+		dfs(idx+1, score+food[idx][0], cal+food[idx][1]);
+		dfs(idx+1, score, cal);
 	}
 
 }
-/*
-
-재료에 대한 점수, 재료에 대한 칼로리
-
-l = 제한칼로리
-n = 재료 수
-
-맛 점수, 칼로리
-
-정해진 칼로리 이하의 조합중 만기가 가장 선호하는 햄버거를 조합해주자
-
-*/
